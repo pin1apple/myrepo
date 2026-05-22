@@ -1,0 +1,61 @@
+
+{
+  "name": "sales-champion-ai",
+  "version": "1.0.0",
+  "description": "复制销冠AI助手 - 桌面客户端",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
+    "build": "electron-builder"
+  },
+  "keywords": ["sales", "ai", "assistant"],
+  "author": "Pineapple",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.pineapple.salesai",
+    "productName": "复制销冠AI助手",
+    "copyright": "Copyright © 2024 Pineapple",
+    "directories": {
+      "output": "dist/${version}"
+    },
+    "files": [
+      "**/*",
+      "!node_modules/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "${productName}-${version}-setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "复制销冠AI助手",
+      "language": "2052",
+      "perMachine": true
+    },
+    "mac": {
+      "target": ["dmg"],
+      "category": "public.app-category.business",
+      "artifactName": "${productName}-${version}.${ext}"
+    },
+    "linux": {
+      "target": ["AppImage"],
+      "category": "Office",
+      "artifactName": "${productName}-${version}.${ext}"
+    }
+  }
+}

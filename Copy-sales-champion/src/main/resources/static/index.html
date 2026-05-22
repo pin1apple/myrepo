@@ -1,0 +1,765 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>复制销冠 - AI智能销售助手</title>
+    <style>        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            color: #667eea;
+            font-size: 28px;
+        }
+
+        header p {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav-tab {
+            background: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .nav-tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .content-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #38a169;
+        }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+            border-radius: 6px;
+            white-space: pre-wrap;
+        }
+
+        .upload-area {
+            border: 3px dashed #cbd5e0;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-area:hover {
+            border-color: #667eea;
+            background: #f7fafc;
+        }
+
+        .session-list {
+            margin-top: 20px;
+        }
+
+        .session-item {
+            padding: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .session-item:hover {
+            background: #f7fafc;
+            border-color: #667eea;
+        }
+
+        .session-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .session-title {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .score-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .analysis-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 6px;
+        }
+
+        .analysis-section h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🏆 复制销冠 - AI智能销售助手</h1>
+        <p>面销策略分析 | 录音智能复盘 | 销售能力提升</p>
+    </header>
+
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="showSection('strategy')">💼 面销策略分析</button>
+        <button class="nav-tab" onclick="showSection('session')">🎙️ 会话录音管理</button>
+        <button class="nav-tab" onclick="showSection('knowledge')">📚 知识库管理</button>
+        <button class="nav-tab" onclick="showSection('chat')">🤖 AI智能问答</button>
+    </div>
+
+    <div id="strategy-section" class="content-section active">
+        <h2 style="margin-bottom: 20px;">面销前策略分析</h2>
+        <form id="strategyForm">
+            <div class="form-group">
+                <label>客户信息</label>
+                <textarea id="customerInfo" placeholder="请输入客户的基本信息、行业背景、需求痛点等..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>产品信息</label>
+                <textarea id="productInfo" placeholder="请输入要销售的产品或服务信息..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>会议目标</label>
+                <input type="text" id="meetingObjective" placeholder="例如：达成合作意向、签订试用协议等">
+            </div>
+            <div class="form-group">
+                <label>历史背景</label>
+                <textarea id="historicalContext" placeholder="之前的沟通记录、客户关系等情况..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">生成策略分析</button>
+        </form>
+        <div id="strategyResult" class="hidden">
+            <h3 style="margin-top: 30px; margin-bottom: 15px;">分析结果</h3>
+            <div id="strategyContent"></div>
+        </div>
+    </div>
+
+    <div id="session-section" class="content-section">
+        <h2 style="margin-bottom: 20px;">会话录音管理</h2>
+
+        <div class="upload-area" onclick="document.getElementById('audioFile').click()">
+            <p style="font-size: 18px; margin-bottom: 10px;">📁 点击上传录音文件</p>
+            <p style="color: #666;">支持 MP3、WAV、M4A 格式</p>
+            <input type="file" id="audioFile" accept="audio/*" style="display: none;" onchange="handleFileSelect(event)">
+        </div>
+
+        <div id="uploadForm" class="hidden" style="margin-top: 20px;">
+            <div class="form-group">
+                <label>会话名称</label>
+                <input type="text" id="sessionName" placeholder="例如：与XX公司的首次面谈">
+            </div>
+            <div class="form-group">
+                <label>客户姓名（选填）</label>
+                <input type="text" id="customerName" placeholder="客户姓名">
+            </div>
+            <button onclick="uploadRecording()" class="btn btn-primary">开始上传</button>
+        </div>
+
+        <div class="session-list">
+            <h3 style="margin-top: 30px; margin-bottom: 15px;">会话列表</h3>
+            <div id="sessionsContainer"></div>
+        </div>
+
+        <div id="sessionDetail" class="hidden" style="margin-top: 30px;">
+            <h3 style="margin-bottom: 15px;">会话详情与分析</h3>
+            <div id="sessionDetailContent"></div>
+        </div>
+    </div>
+
+    <div id="knowledge-section" class="content-section">
+        <h2 style="margin-bottom: 20px;">知识库管理</h2>
+
+        <form id="knowledgeForm">
+            <div class="form-group">
+                <label>标题</label>
+                <input type="text" id="knowledgeTitle" placeholder="销售技巧标题">
+            </div>
+            <div class="form-group">
+                <label>内容</label>
+                <textarea id="knowledgeContent" placeholder="详细的销售话术、技巧或案例..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>分类</label>
+                <select id="knowledgeCategory">
+                    <option value="opening">开场白技巧</option>
+                    <option value="objection">异议处理</option>
+                    <option value="closing">成交技巧</option>
+                    <option value="questioning">提问技巧</option>
+                    <option value="product">产品知识</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>标签</label>
+                <input type="text" id="knowledgeTags" placeholder="用逗号分隔，例如：电话销售,B2B,初次接触">
+            </div>
+            <button type="submit" class="btn btn-success">添加到知识库</button>
+        </form>
+
+        <div style="margin-top: 30px;">
+            <h3 style="margin-bottom: 15px;">知识库列表</h3>
+            <div id="knowledgeList"></div>
+        </div>
+    </div>
+
+    <div id="chat-section" class="content-section">
+        <h2 style="margin-bottom: 20px;">AI智能问答</h2>
+        <div style="border: 2px solid #e2e8f0; border-radius: 10px; padding: 20px; min-height: 400px;">
+            <div id="chatMessages" style="max-height: 350px; overflow-y: auto; margin-bottom: 20px;">
+                <div style="padding: 10px; background: #f7fafc; border-radius: 6px; margin-bottom: 10px;">
+                    <strong>AI助手：</strong>您好！我是您的销售助手，请问有什么可以帮助您的吗？
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="chatInput" placeholder="输入您的问题..."
+                       style="flex: 1; padding: 12px; border: 2px solid #e2e8f0; border-radius: 6px;"
+                       onkeypress="if(event.key==='Enter') sendChatMessage()">
+                <button onclick="sendChatMessage()" class="btn btn-primary">发送</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>        const API_BASE = 'http://localhost:8080/api';
+        let currentSessionId = null;
+
+        function showSection(section) {
+            document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(section + '-section').classList.add('active');
+            event.target.classList.add('active');
+
+            if (section === 'session') {
+                loadSessions();
+            } else if (section === 'knowledge') {
+                loadKnowledgeList();
+            }
+        }
+
+        document.getElementById('strategyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const requestData = {
+                customerInfo: document.getElementById('customerInfo').value,
+                productInfo: document.getElementById('productInfo').value,
+                meetingObjective: document.getElementById('meetingObjective').value,
+                historicalContext: document.getElementById('historicalContext').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/strategy/analyze`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestData)
+                });
+
+                const result = await response.json();
+
+                if (result.code === 200) {
+                    displayStrategyResult(result.data);
+                } else {
+                    alert('分析失败: ' + result.message);
+                }
+            } catch (error) {
+                alert('请求失败: ' + error.message);
+            }
+        });
+
+        function displayStrategyResult(data) {
+            const content = `                <div class="result-box">
+                    <h4>📋 会前策略</h4>
+                    <p>${data.preMeetingStrategy || '暂无数据'}</p>
+                </div>
+                <div class="result-box">
+                    <h4>🎯 关键话术要点</h4>
+                    <p>${data.keyTalkingPoints || '暂无数据'}</p>
+                </div>
+                <div class="result-box">
+                    <h4>⚠️ 可能遇到的异议</h4>
+                    <p>${data.potentialObjections || '暂无数据'}</p>
+                </div>
+                <div class="result-box">
+                    <h4>💡 推荐的沟通方式</h4>
+                    <p>${data.recommendedApproach || '暂无数据'}</p>
+                </div>
+                <div class="result-box">
+                    <h4>✅ 成功关键因素</h4>
+                    <p>${data.successFactors || '暂无数据'}</p>
+                </div>
+            `;
+
+            document.getElementById('strategyContent').innerHTML = content;
+            document.getElementById('strategyResult').classList.remove('hidden');
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById('uploadForm').classList.remove('hidden');
+                alert(`已选择文件: ${file.name}`);
+            }
+        }
+
+        async function uploadRecording() {
+            const fileInput = document.getElementById('audioFile');
+            const sessionName = document.getElementById('sessionName').value;
+            const customerName = document.getElementById('customerName').value;
+
+            if (!fileInput.files[0] || !sessionName) {
+                alert('请选择录音文件并填写会话名称');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('audioFile', fileInput.files[0]);
+            formData.append('sessionName', sessionName);
+            formData.append('customerName', customerName);
+
+            try {
+                const response = await fetch(`${API_BASE}/session/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.code === 200) {
+                    alert('上传成功！');
+                    currentSessionId = result.data.id;
+                    loadSessions();
+                    document.getElementById('uploadForm').classList.add('hidden');
+                    fileInput.value = '';
+                    document.getElementById('sessionName').value = '';
+                    document.getElementById('customerName').value = '';
+                } else {
+                    alert('上传失败: ' + result.message);
+                }
+            } catch (error) {
+                alert('请求失败: ' + error.message);
+            }
+        }
+
+        async function loadSessions() {
+            try {
+                const response = await fetch(`${API_BASE}/session/list`);
+                const result = await response.json();
+
+                if (result.code === 200) {
+                    displaySessions(result.data);
+                }
+            } catch (error) {
+                console.error('加载会话列表失败:', error);
+            }
+        }
+
+        function displaySessions(sessions) {
+            const container = document.getElementById('sessionsContainer');
+
+            if (sessions.length === 0) {
+                container.innerHTML = '<p style="color: #666; text-align: center;">暂无会话记录</p>';
+                return;
+            }
+
+            container.innerHTML = sessions.map(session => `                <div class="session-item" onclick="viewSessionDetail(${session.id})">
+                    <div class="session-header">
+                        <span class="session-title">${session.sessionName}</span>
+                        <span class="status-badge ${session.status === 'ANALYZED' ? 'status-completed' : 'status-pending'}">
+                            ${getStatusText(session.status)}                        </span>
+                    </div>
+                    <div style="color: #666; font-size: 14px;">
+                        ${session.customerName ? '客户: ' + session.customerName + ' | ' : ''}                        时间: ${formatDateTime(session.sessionDate)}                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getStatusText(status) {
+            const statusMap = {
+                'PENDING': '待处理',
+                'UPLOADED': '已上传',
+                'TRANSCRIBED': '已转录',
+                'ANALYZED': '已分析'
+            };
+            return statusMap[status] || status;
+        }
+
+        function formatDateTime(dateTime) {
+            if (!dateTime) return '未知';
+            const date = new Date(dateTime);
+            return date.toLocaleString('zh-CN');
+        }
+
+        async function viewSessionDetail(sessionId) {
+            try {
+                const response = await fetch(`${API_BASE}/session/${sessionId}`);
+                const result = await response.json();
+
+                if (result.code === 200) {
+                    displaySessionDetail(result.data);
+
+                    if (result.data.reportStatus === 'PENDING') {
+                        showSessionActions(sessionId);
+                    }
+                }
+            } catch (error) {
+                alert('加载会话详情失败: ' + error.message);
+            }
+        }
+
+        function displaySessionDetail(data) {
+            const content = `                <div class="form-group">
+                    <label>会话名称</label>
+                    <input type="text" value="${data.sessionName}" readonly>
+                </div>
+                ${data.customerName ? `                <div class="form-group">
+                    <label>客户姓名</label>
+                    <input type="text" value="${data.customerName}" readonly>
+                </div>
+                ` : ''}                <div class="form-group">
+                    <label>会话时间</label>
+                    <input type="text" value="${formatDateTime(data.sessionDate)}" readonly>
+                </div>
+                ${data.transcriptionText ? `                <div class="form-group">
+                    <label>对话文本</label>
+                    <textarea readonly style="min-height: 200px;">${data.transcriptionText}</textarea>
+                </div>
+                ` : ''}                ${data.overallScore ? `                <div class="score-display">
+                    ${data.overallScore.toFixed(1)}分
+                </div>
+                ` : ''}                ${data.conversationAnalysis ? `                <div class="analysis-section">
+                    <h3>📊 对话分析</h3>
+                    <p>${data.conversationAnalysis}</p>
+                </div>
+                ` : ''}                ${data.improvementSuggestions ? `                <div class="analysis-section">
+                    <h3>💡 改进建议</h3>
+                    <p>${data.improvementSuggestions}</p>
+                </div>
+                ` : ''}                ${data.keyStrengths ? `                <div class="analysis-section">
+                    <h3>✨ 主要优势</h3>
+                    <p style="white-space: pre-line;">${data.keyStrengths}</p>
+                </div>
+                ` : ''}                ${data.areasForImprovement ? `                <div class="analysis-section">
+                    <h3>🎯 待提升领域</h3>
+                    <p style="white-space: pre-line;">${data.areasForImprovement}</p>
+                </div>
+                ` : ''}            `;
+
+            document.getElementById('sessionDetailContent').innerHTML = content;
+            document.getElementById('sessionDetail').classList.remove('hidden');
+        }
+
+        function showSessionActions(sessionId) {
+            const actionsDiv = document.createElement('div');
+            actionsDiv.style.marginTop = '20px';
+            actionsDiv.innerHTML = `                <button onclick="transcribeSession(${sessionId})" class="btn btn-primary" style="margin-right: 10px;">
+                    开始转录
+                </button>
+                <button onclick="analyzeSession(${sessionId})" class="btn btn-success">
+                    开始分析
+                </button>
+            `;
+
+            const existingActions = document.querySelector('#sessionDetail .session-actions');
+            if (existingActions) {
+                existingActions.remove();
+            }
+
+            actionsDiv.className = 'session-actions';
+            document.getElementById('sessionDetail').appendChild(actionsDiv);
+        }
+
+        async function transcribeSession(sessionId) {
+            try {
+                const response = await fetch(`${API_BASE}/session/transcribe/${sessionId}`, {
+                    method: 'POST'
+                });
+
+                const result = await response.json();
+
+                if (result.code === 200) {
+                    alert('转录成功！');
+                    viewSessionDetail(sessionId);
+                    loadSessions();
+                } else {
+                    alert('转录失败: ' + result.message);
+                }
+            } catch (error) {
+                alert('请求失败: ' + error.message);
+            }
+        }
+
+        async function analyzeSession(sessionId) {
+            try {
+                const response = await fetch(`${API_BASE}/session/analyze/${sessionId}`, {
+                    method: 'POST'
+                });
+
+                const result = await response.json();
+
+                if (result.code === 200) {
+                    alert('分析完成！');
+                    viewSessionDetail(sessionId);
+                    loadSessions();
+                } else {
+                    alert('分析失败: ' + result.message);
+                }
+            } catch (error) {
+                alert('请求失败: ' + error.message);
+            }
+        }
+
+        document.getElementById('knowledgeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const requestData = {
+                title: document.getElementById('knowledgeTitle').value,
+                content: document.getElementById('knowledgeContent').value,
+                category: document.getElementById('knowledgeCategory').value,
+                tags: document.getElementById('knowledgeTags').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/knowledge/add`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestData)
+                });
+
+                const result = await response.json();
+
+                if (result.code === 200) {
+                    alert('添加成功！');
+                    document.getElementById('knowledgeForm').reset();
+                    loadKnowledgeList();
+                } else {
+                    alert('添加失败: ' + result.message);
+                }
+            } catch (error) {
+                alert('请求失败: ' + error.message);
+            }
+        });
+
+        async function loadKnowledgeList() {
+            try {
+                const response = await fetch(`${API_BASE}/knowledge/list`);
+                const result = await response.json();
+
+                if (result.code === 200) {
+                    displayKnowledgeList(result.data);
+                }
+            } catch (error) {
+                console.error('加载知识库失败:', error);
+            }
+        }
+
+        function displayKnowledgeList(knowledgeList) {
+            const container = document.getElementById('knowledgeList');
+
+            if (knowledgeList.length === 0) {
+                container.innerHTML = '<p style="color: #666; text-align: center;">暂无知识库内容</p>';
+                return;
+            }
+
+            container.innerHTML = knowledgeList.map(item => `                <div class="session-item">
+                    <div class="session-header">
+                        <span class="session-title">${item.title}</span>
+                        <span style="color: #666; font-size: 12px;">${item.category}</span>
+                    </div>
+                    <div style="color: #666; font-size: 14px; margin-top: 5px;">
+                        ${item.content.substring(0, 100)}${item.content.length > 100 ? '...' : ''}                    </div>
+                    ${item.tags ? `                    <div style="margin-top: 8px;">
+                        ${item.tags.split(',').map(tag => `<span style="background: #e2e8f0; padding: 2px 8px; border-radius: 10px; font-size: 12px; margin-right: 5px;">${tag}</span>`).join('')}                    </div>
+                    ` : ''}                </div>
+            `).join('');
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            const messagesDiv = document.getElementById('chatMessages');
+
+            messagesDiv.innerHTML += `                <div style="padding: 10px; background: #e6fffa; border-radius: 6px; margin-bottom: 10px; text-align: right;">
+                    <strong>您：</strong>${message}                </div>
+            `;
+
+            input.value = '';
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            try {
+                const response = await fetch(`${API_BASE}/strategy/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+
+                const result = await response.json();
+
+                if (result.code === 200) {
+                    messagesDiv.innerHTML += `                        <div style="padding: 10px; background: #f7fafc; border-radius: 6px; margin-bottom: 10px;">
+                            <strong>AI助手：</strong>${result.data}                        </div>
+                    `;
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                }
+            } catch (error) {
+                console.error('发送消息失败:', error);
+            }
+        }
+
+        loadSessions();
+</script>
+</body>
+</html>
