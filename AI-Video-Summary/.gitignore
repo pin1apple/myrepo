@@ -1,0 +1,94 @@
+
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### macOS ###
+.DS_Store
+
+### Windows ###
+Thumbs.db
+desktop.ini
+
+# ============================================
+# 用户数据（包含敏感信息，不上传）
+# ============================================
+
+# 字幕文件夹（用户上传自己的字幕）
+subtitles/
+*-subtitles/
+
+# AI生成的输出文件（运行时生成）
+*.md
+!README.md
+
+# 配置文件中的敏感信息（提供示例文件）
+application.yaml
+!application.yaml.example
+
+# API密钥相关文件
+*.key
+*.secret
+.env
+
+# ============================================
+# 日志和临时文件
+# ============================================
+logs/
+*.log
+*.tmp
+*.swp
+*~
+
+# ============================================
+# Maven
+# ============================================
+.mvn/
+mvnw
+mvnw.cmd
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# ============================================
+# IDE特定配置（可选保留团队配置）
+# ============================================
+# 如果想共享IDE配置，可以注释掉以下行
+# .idea/
+# *.iml

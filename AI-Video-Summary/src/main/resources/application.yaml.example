@@ -1,0 +1,16 @@
+
+spring:
+  application:
+    name: AI-Video-Summary
+
+qwen:
+  api-key: ${QWEN_API_KEY}  # 从环境变量读取，或替换为你的API密钥
+  api-url: https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation
+  model: qwen-turbo
+  temperature: 0.2
+
+subtitles:
+  folder: subtitles  # 字幕文件夹路径
+
+output:
+  filename: output.md  # 输出文件名
